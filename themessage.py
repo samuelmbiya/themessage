@@ -23,7 +23,7 @@ print("-"*100)
 
 sermon_no = 2
 
-paragraph_no = 3
+paragraph_no = 12
 
 # has to be an odd number for some reason
 if sermon_no % 2 == 0:
@@ -43,9 +43,10 @@ for i in range(sermon_no, sermon_no+2, 2):
     meta_data = text_query[0]
     title = meta_data.split("Preached")[0]
     preaching_text = text_query[1].split("\n") #split by paragraph number
-    K = len(preaching_text) # no of paragraphs
 
-print(K)
+K = len(preaching_text) -1 # no of paragraphs because of zero indexing
+
+print('Paragraph: ', paragraph_no, ' out of', K)
 print(preaching_text[paragraph_no-1]) # zero indexed list
 
 # print(query)
