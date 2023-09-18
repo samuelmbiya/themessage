@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 
-letter = "B"
+letter = "A"
 
 url = f"https://churchages.net/en/sermons/branham/{letter}/"
 
@@ -11,11 +11,23 @@ soup = BeautifulSoup(html, "html.parser")
 
 query = soup.find_all('div', class_='cards')[0].contents
 
-N = len(query)
+N = len(query) # number of sermons starting with the input letter
 
-# find all sermons for alphabet letter
+# find and collect all sermons for alphabet letter
+sermons_list = []
 for j in range(3, N, 2):
-    print('Name: '+query[j].text+ '\n' + 'Link: '+ query[j].get('href'))
+    # print('Name: '+query[j].text+ '\n' + 'Link: '+ query[j].get('href'))
+    sermonObj = {'title':query[j].text[0:-10], 'date':query[j].text[-10:], 'link': query[j].get('href')}
+    sermons_list.append(sermonObj)
+    print(sermonObj)
+
+print("-"*100)
+
+s = 1 # sermon index
+
+print(len(sermons_list), '\n')
+print(sermons_list, '\n')
+print(sermons_list[s-1], '\n')
 
 print("-"*100)
 
@@ -29,8 +41,9 @@ paragraph_no = 12
 if sermon_no % 2 == 0:
     sermon_no = sermon_no + 1
 
-sermon_no = sermon_no+2
+sermon_no = sermon_no+2 # for some reason, I have to start from 3
 
+# parse sermon
 for i in range(sermon_no, sermon_no+2, 2):
     print('Name: '+query[i].text+ '\n' + 'Link: '+ query[i].get('href'))
     text_url = query[i].get('href')
@@ -48,6 +61,4 @@ K = len(preaching_text) -1 # no of paragraphs because of zero indexing
 
 print('Paragraph: ', paragraph_no, ' out of', K)
 print(preaching_text[paragraph_no-1]) # zero indexed list
-
-# print(query)
 
