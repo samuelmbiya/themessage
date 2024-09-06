@@ -53,6 +53,10 @@ sermonObj = sermons_list[s-1]
 text_page = urlopen(sermonObj['link'])
 text_html = text_page.read().decode("utf-8")
 text_soup = BeautifulSoup(text_html, "html.parser")
+
+for xref in text_soup.find_all('div',class_='xref'):
+    xref.decompose()
+
 text_query = text_soup.find_all('article')[0].get_text().split(".net")
 meta_data = text_query[0]
 title = meta_data.split("Preached")[0]
