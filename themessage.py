@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 
-letter = "E"
+letter = "H"
 
 url = f"https://churchages.net/en/sermons/branham/{letter}/"
 
@@ -25,8 +25,8 @@ for j in range(3, N, 2):
 
 print("-"*100)
 
-s = 25 # sermon index
-p = 100 # paragraph
+s = 61 # sermon index
+p = 120 # paragraph
 
 # print(len(sermons_list), '\n')
 # print(sermons_list, '\n')
