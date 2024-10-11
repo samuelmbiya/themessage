@@ -1,13 +1,17 @@
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 
-letter = "H"
+letter = "P"
 
 url = f"https://churchages.net/en/sermons/branham/{letter}/"
 
 page = urlopen(url)
 html = page.read().decode("utf-8")
 soup = BeautifulSoup(html, "html.parser")
+
+# for xref in soup("xref"):
+#     xref.decompose()
+
 
 query = soup.find_all('div', class_='cards')[0].contents
 
@@ -25,8 +29,8 @@ for j in range(3, N, 2):
 
 print("-"*100)
 
-s = 61 # sermon index
-p = 120 # paragraph
+s = 54 # sermon index
+p = 1 # paragraph
 
 # print(len(sermons_list), '\n')
 # print(sermons_list, '\n')
@@ -54,8 +58,9 @@ text_page = urlopen(sermonObj['link'])
 text_html = text_page.read().decode("utf-8")
 text_soup = BeautifulSoup(text_html, "html.parser")
 
-for xref in text_soup.find_all('div',class_='xref'):
-    xref.decompose()
+# print(text_soup)
+xref_all = text_soup.find_all(attrs={"class": "Xrefs"})
+[xref.decompose() for xref in xref_all]
 
 text_query = text_soup.find_all('article')[0].get_text().split(".net")
 meta_data = text_query[0]
@@ -67,5 +72,10 @@ K = len(preaching_text) -1 # no of paragraphs because of zero indexing
 print('Title: ', sermonObj['title'])
 print('Date: ', sermonObj['date'])
 print('Paragraph: ', paragraph_no, ' out of', K)
-print(preaching_text[paragraph_no-1]) # zero indexed list
+
+for p_no in range(1,K+1,1):
+    # print(preaching_text[paragraph_no-1]) # zero indexed list
+    print(preaching_text[p_no-1] + "\n") # zero indexed list
+
+
 
