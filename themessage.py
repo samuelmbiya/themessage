@@ -29,7 +29,7 @@ for j in range(3, N, 2):
 
 print("-"*100)
 
-s = 54 # sermon index
+s = 2 # sermon index
 p = 1 # paragraph
 
 # print(len(sermons_list), '\n')
@@ -73,9 +73,40 @@ print('Title: ', sermonObj['title'])
 print('Date: ', sermonObj['date'])
 print('Paragraph: ', paragraph_no, ' out of', K)
 
+# print(preaching_text[paragraph_no-1]) # zero indexed list
+
+# for p_no in range(1,K+1,1):
+#     print(preaching_text[p_no-1] + "\n") # zero indexed list
+
+song_string = ''
 for p_no in range(1,K+1,1):
-    # print(preaching_text[paragraph_no-1]) # zero indexed list
-    print(preaching_text[p_no-1] + "\n") # zero indexed list
+    # print(f'<verse label="{p_no}" type="custom">'+ f'<![CDATA[{preaching_text[p_no-1]}]]>'+ '</verse>')
+    song_string += f'<verse label="{p_no}" type="custom">'+ f'<![CDATA[{preaching_text[p_no-1]}]]>'+ '</verse>'
+print('<?xml version="1.0" encoding="utf-8"?>'+'<song version="1.0">'+'<lyrics language="en">'+song_string+'<lyrics>'+'</song>')
 
+f = open("myfile.txt", "w")
+f.write('<?xml version="1.0" encoding="utf-8"?>\n'+'<song version="1.0">\n'+'<lyrics language="en">\n'+song_string+'<lyrics>\n'+'</song>')
+f.close()
 
+#<?xml version="1.0" encoding="utf-8"?>
+# <song version="1.0">
+# <lyrics language="en">
+# <verse type="custom" label="1"><![CDATA[1 Test 1]]></verse>
+# <verse type="custom" label="2"><![CDATA[2 Test 2]]></verse>
+# <verse type="custom" label="3"><![CDATA[3 Test 3]]></verse>
+# <verse type="custom" label="4"><![CDATA[4 Test 4]]></verse>
+# </lyrics>
+# </song>
 
+#<?xml version="1.0" encoding="utf-8"?>
+# <song version="1.0">
+# <lyrics language="en">
+# <verse type="custom" label="1"><![CDATA[1 Test 1]]></verse>
+# <verse type="custom" label="2"><![CDATA[2 Test 2]]></verse>
+# <verse type="custom" label="3"><![CDATA[3 Test 3]]></verse>
+# <verse type="custom" label="4"><![CDATA[4 Test 4]]></verse>
+# <verse type="custom" label="5"><![CDATA[29 See, some of them today... It's going to get more than ever, and as the days go by, that we're going to see people with this (as Jesus said), " form of godliness,"---and just a form it's coming into. We've had it in the Methodists, and Baptists, and so forth, for years, and now it's creeped over into the Pentecostals. And little...When God gave a man the Holy Spirit He set him with his face towards Calvary, and the Word before him. Now little roots will rise up from off that highway, come in and wrap around and around that tree, and you think it's very innocent. 
+#[---]
+#But the first thing you know, it's got such a hold on you until it pulls you the wrong way---makes you lean the wrong way. And so has philosophies and things entered among us until it's begun to pull us towards the world. You take the sharp two-edged sword of God and cut free from everything and stay right on that Word, because that is the ultimate. That's the absolute to every believer.]]></verse>
+# </lyrics>
+# </song>
