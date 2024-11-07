@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 from urllib.request import urlopen
 from lxml import etree
 
-letter = "P"
+letter = "G"
 
 url = f"https://churchages.net/en/sermons/branham/{letter}/"
 
@@ -30,7 +30,7 @@ for j in range(3, N, 2):
 
 print("-"*100)
 
-s = 7 # sermon index
+s = 91 # sermon index
 p = 1 # paragraph
 
 # print(len(sermons_list), '\n')
@@ -84,6 +84,8 @@ verse_order = ''
 for p_no in range(1,K+1,1):
     # print(f'<verse label="{p_no}" type="custom">'+ f'<![CDATA[{preaching_text[p_no-1]}]]>'+ '</verse>')
     verse_order += f'v{p_no} '
+    print(len(preaching_text[p_no-1].split("."))-1)
+    # print(preaching_text[p_no-1].split("."))
     song_string += f'    <verse name="v{p_no}">'+'\n'+f'      <lines>{preaching_text[p_no-1]}</lines>'+'\n'+'    </verse>'+'\n'
 # print('<?xml version="1.0" encoding="utf-8"?>'+'\n'+'<song version="1.0" xmlns="http://openlyrics.info/namespace/2009/song">'+'<lyrics language="en">'+song_string+'<lyrics>'+'\n'+'</song>')
 
