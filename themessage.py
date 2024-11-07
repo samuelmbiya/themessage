@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
+from lxml import etree
 
 letter = "P"
 
@@ -29,7 +30,7 @@ for j in range(3, N, 2):
 
 print("-"*100)
 
-s = 2 # sermon index
+s = 7 # sermon index
 p = 1 # paragraph
 
 # print(len(sermons_list), '\n')
@@ -78,35 +79,28 @@ print('Paragraph: ', paragraph_no, ' out of', K)
 # for p_no in range(1,K+1,1):
 #     print(preaching_text[p_no-1] + "\n") # zero indexed list
 
-song_string = ''
+song_string = '\n'
+verse_order = ''
 for p_no in range(1,K+1,1):
     # print(f'<verse label="{p_no}" type="custom">'+ f'<![CDATA[{preaching_text[p_no-1]}]]>'+ '</verse>')
-    song_string += f'<verse label="{p_no}" type="custom">'+ f'<![CDATA[{preaching_text[p_no-1]}]]>'+ '</verse>'
-print('<?xml version="1.0" encoding="utf-8"?>'+'<song version="1.0">'+'<lyrics language="en">'+song_string+'<lyrics>'+'</song>')
+    verse_order += f'v{p_no} '
+    song_string += f'    <verse name="v{p_no}">'+'\n'+f'      <lines>{preaching_text[p_no-1]}</lines>'+'\n'+'    </verse>'+'\n'
+# print('<?xml version="1.0" encoding="utf-8"?>'+'\n'+'<song version="1.0" xmlns="http://openlyrics.info/namespace/2009/song">'+'<lyrics language="en">'+song_string+'<lyrics>'+'\n'+'</song>')
 
-f = open("myfile.txt", "w")
-f.write('<?xml version="1.0" encoding="utf-8"?>\n'+'<song version="1.0">\n'+'<lyrics language="en">\n'+song_string+'<lyrics>\n'+'</song>')
+t = sermonObj['title']
+d = sermonObj['date']
+temp = d.split("-")
+yy = temp[0][2:4]
+mm = temp[1]
+dd = temp[2]
+t += f'{yy}-'+f'{mm}'+f'{dd}'
+
+f = open(f'{t}'+'.xml', "w")
+meta_data = '  <properties>'+'\n'+'    <titles>'+'\n'+f'      <title>{t}</title>'+'\n'+'    </titles>'+'\n'+f'    <verseOrder>{verse_order}</verseOrder>'+'\n'+'    <authors>'+'\n'+'      <author>VGR</author>'+'\n'+'    </authors>'+'\n'+'  </properties>'
+f.write('<?xml version="1.0" encoding="utf-8"?>'+'\n'+'<song xmlns="http://openlyrics.info/namespace/2009/song" version="0.8" createdIn="OpenLP 3.0.2" modifiedIn="OpenLP 3.0.2" modifiedDate="2024-11-07T19:39:02">'+'\n'+meta_data+'\n'+'  <lyrics language="en">'+song_string+'  </lyrics>'+'\n'+'</song>')
 f.close()
 
-#<?xml version="1.0" encoding="utf-8"?>
-# <song version="1.0">
-# <lyrics language="en">
-# <verse type="custom" label="1"><![CDATA[1 Test 1]]></verse>
-# <verse type="custom" label="2"><![CDATA[2 Test 2]]></verse>
-# <verse type="custom" label="3"><![CDATA[3 Test 3]]></verse>
-# <verse type="custom" label="4"><![CDATA[4 Test 4]]></verse>
-# </lyrics>
-# </song>
-
-#<?xml version="1.0" encoding="utf-8"?>
-# <song version="1.0">
-# <lyrics language="en">
-# <verse type="custom" label="1"><![CDATA[1 Test 1]]></verse>
-# <verse type="custom" label="2"><![CDATA[2 Test 2]]></verse>
-# <verse type="custom" label="3"><![CDATA[3 Test 3]]></verse>
-# <verse type="custom" label="4"><![CDATA[4 Test 4]]></verse>
-# <verse type="custom" label="5"><![CDATA[29 See, some of them today... It's going to get more than ever, and as the days go by, that we're going to see people with this (as Jesus said), " form of godliness,"---and just a form it's coming into. We've had it in the Methodists, and Baptists, and so forth, for years, and now it's creeped over into the Pentecostals. And little...When God gave a man the Holy Spirit He set him with his face towards Calvary, and the Word before him. Now little roots will rise up from off that highway, come in and wrap around and around that tree, and you think it's very innocent. 
-#[---]
-#But the first thing you know, it's got such a hold on you until it pulls you the wrong way---makes you lean the wrong way. And so has philosophies and things entered among us until it's begun to pull us towards the world. You take the sharp two-edged sword of God and cut free from everything and stay right on that Word, because that is the ultimate. That's the absolute to every believer.]]></verse>
-# </lyrics>
-# </song>
+parser = etree.XMLParser(remove_blank_text=True)
+parsed_file = etree.parse(open('Palmerworm, locust, cankerworm and caterpillar1953-06-12.xml', 'rb'), parser)
+xml = etree.tostring(parsed_file).decode()
+# print(xml)
