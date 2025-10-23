@@ -1,7 +1,7 @@
 # themessage
 ## A tool to display the sermons of William Branham
 
-Goal: To learn how to scrape websites using BeautifulSoup.
+Goal: To learn how to scrape websites using BeautifulSoup and NLTK.
 
 Source: https://churchages.net/en/sermons/#branham
 
